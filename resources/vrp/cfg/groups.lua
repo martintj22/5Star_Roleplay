@@ -57,7 +57,7 @@ end
 
 cfg.groups = {
   ["superadmin"] = {
-    _config = {onspawn = function(user) vRP.EXT.Base.remote._notify(user.source, "You are superadmin.") end},
+    _config = {onspawn = function(user) vRP.EXT.Base.remote._notify(user.source, "Du er nu superadmin.") end},
     "player.group.add",
     "player.group.remove",
     "player.givemoney",
@@ -102,15 +102,12 @@ cfg.groups = {
   ["DeptHead"] = { --add this group to users for whitelisted department head roles. DO NOT DELETE
     "department.head.whitelisted"
   },
-  ["EMS"] = { --add this group to users for whitelisted department head roles. DO NOT DELETE
-    "EMS.whitelisted"
-  },
   --==========|===========|==========--
   --==========|LSPD Groups|==========--
   --==========|===========|==========--
   ["cadet"] = {
     _config = {
-      title = "LSPD Cadet",
+      title = "LSPD Kadet",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -137,7 +134,7 @@ cfg.groups = {
   },
   ["police1"] = {
     _config = {
-      title = "Police Officer",
+      title = "Politimand",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -164,7 +161,7 @@ cfg.groups = {
   },
   ["police2"] = {
     _config = {
-      title = "Senior Police Officer",
+      title = "Senior politibetjent",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -191,7 +188,7 @@ cfg.groups = {
   },
   ["lspd_corporal"] = {
     _config = {
-      title = "LSPD Corporal",
+      title = "LSPD korporal",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -218,7 +215,7 @@ cfg.groups = {
   },
   ["lspd_sgt"] = {
     _config = {
-      title = "LSPD Sergeant",
+      title = "LSPD Sergent",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -245,7 +242,7 @@ cfg.groups = {
   },
   ["lspd_lt"] = {
     _config = {
-      title = "LSPD Lieutenant",
+      title = "LSPD Løjtnant",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -272,7 +269,7 @@ cfg.groups = {
   },
   ["lspd_cpt"] = {
     _config = {
-      title = "LSPD Captain",
+      title = "LSPD Kaptajn",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -299,7 +296,7 @@ cfg.groups = {
   },
   ["lspd_ltmjr"] = {
     _config = {
-      title = "LSPD Lieutenant Major",
+      title = "LSPD Løjtnant major",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -353,7 +350,7 @@ cfg.groups = {
   },
   ["lspd_cmdr"] = {
     _config = {
-      title = "LSPD Commander",
+      title = "LSPD Kommandør",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -380,7 +377,7 @@ cfg.groups = {
   },
   ["lspd_asscheif"] = {
     _config = {
-      title = "LSPD Assistant Chief",
+      title = "LSPD Assistentchef",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -438,7 +435,7 @@ cfg.groups = {
   ----------------
   ["emergency"] = {
     _config = {
-      title = "Emergency",
+      title = "Reder",
       gtype = "job"
     },
     "emergency.revive",
@@ -466,9 +463,9 @@ cfg.groups = {
     "taxi.service",
     "taxi.vehicle"
   },
-  ["citizen"] = {
+  ["Borger"] = {
     _config = {
-      title = "Citizen",
+      title = "Borger",
       gtype = "job"
     }
   }
@@ -499,7 +496,7 @@ cfg.selectors = {
     _config = {x = -268.363739013672, y = -957.255126953125, z = 31.22313880920410, map_entity = {"PoI", {blip_id = 351, blip_color = 47, marker_id = 1}}},
     "taxi",
     "repair",
-    "citizen"
+    "Borger"
   },
   
   --=====|====|=====--
@@ -510,12 +507,12 @@ cfg.selectors = {
     "cadet",
     "police1,"
     "police2,"
-    "citizen"
+    "Borger"
   },
   ["Emergency job"] = {
     _config = {x=-498.959716796875,y=-335.715148925781,z=34.5017547607422, permissions={"EMS.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 1, marker_id = 1}}},
     "emergency",
-    "citizen"
+    "Borger"
   }
 }
 

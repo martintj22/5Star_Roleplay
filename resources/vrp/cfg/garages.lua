@@ -241,15 +241,57 @@ cfg.garage_types = {
     _config = {map_entity = {"PoI", {blip_id = 56, blip_color = 5, marker_id = 1}}, permissions = {"taxi.vehicle"} },
     ["taxi"] = {"Taxi",100,""}
   },
-  ["police"] = {
-    _config = {map_entity = {"PoI", {blip_id = 50, blip_color = 38, marker_id = 1}}, permissions = {"police.vehicle"} },
-    ["police"] = {"Basic",100,"Basic model."},
-    ["police3"] = {"Classic",25000,"Sport model."},
-    ["police2"] = {"Furtive",50000,"Furtive model."}
+  
+  ["LSPD (Cadet)"] = {
+    _config = {map_entity = {"PoI", { marker_id = 1}}, permissions = {"police.vehicle"} },
+    ["police"] = {"Police Cruiser",0,"LSPD"}
+  },
+  ["LSPD (Patrol)"] = {
+    _config = {map_entity = {"PoI", { marker_id = 1}}, permissions = {"police.vehicle2"} },
+    ["police"] = {"Police Cruiser",0,"LSPD"},
+    ["police2"] = {"Police Buffalo",0,"LSPD"},
+    ["pbus"] = {"Prison Bus",0,"LSPD"}
+  },
+  ["LSPD (Supervisor)"] = {
+    _config = {map_entity = {"PoI", { marker_id = 1}}, permissions = {"police.vehicle3"} },
+    ["police"] = {"Police Cruiser",0,"LSPD"},
+    ["police2"] = {"Police Buffalo",0,"LSPD"},
+    ["police3"] = {"Police Interceptor",0,"LSPD"},
+    ["polbuffals"] = {"Police Buffalo S",0,"LSPD"},
+    ["police4"] = {"Unmarked Police Cruiser",0,"LSPD"},
+    ["fbi"] = {"Unmarked Police Buffalo",0,"LSPD"},
+    ["fbi2"] = {"Unmarked Police Granger",0,"LSPD"},
+    ["trubuffals"] = {"Unmarked Police Buffalo S type 1",0,"LSPD"},
+    ["trubuffals2"] = {"Unmarked Police Buffalo S type 2",0,"LSPD"},
+    ["umkbuffals"] = {"Unmarked Police Buffalo S type 3",0,"LSPD"},
+    ["umkbuffals2"] = {"Unmarked Police Buffalo S type 4",0,"LSPD"},
+    ["pbus"] = {"Prison Bus",0,"LSPD"}
+  },
+  ["LSPD (Command)"] = {
+    _config = {map_entity = {"PoI", { marker_id = 1}}, permissions = {"police.vehicle4"} },
+    ["police"] = {"Police Cruiser",0,"LSPD"},
+    ["police2"] = {"Police Buffalo",0,"LSPD"},
+    ["police3"] = {"Police Interceptor",0,"LSPD"},
+    ["polbuffals"] = {"Police Buffalo S",0,"LSPD"},
+    ["police4"] = {"Unmarked Police Cruiser",0,"LSPD"},
+    ["fbi"] = {"Unmarked Police Buffalo",0,"LSPD"},
+    ["fbi2"] = {"Unmarked Police Granger",0,"LSPD"},
+    ["trubuffals"] = {"Unmarked Police Buffalo S type 1",0,"LSPD"},
+    ["trubuffals2"] = {"Unmarked Police Buffalo S type 2",0,"LSPD"},
+    ["umkbuffals"] = {"Unmarked Police Buffalo S type 3",0,"LSPD"},
+    ["umkbuffals2"] = {"Unmarked Police Buffalo S type 4",0,"LSPD"},
+    ["riot"] = {"Police Armored NOOSE Truck",0,"LSPD"},
+    ["riot2"] = {"Police Riot Control Vehicle",0,"LSPD"},
+    ["policeb"] = {"Police Motorcycle",0,"LSPD"},
+    ["pbus"] = {"Prison Bus",0,"LSPD"}
   },
   ["emergency"] = {
     _config = {map_entity = {"PoI", {blip_id = 61, blip_color = 3, marker_id = 1}}, permissions = {"emergency.vehicle"} },
     ["ambulance"] = {"Basic",100,""}
+  },
+  ["Fire Department"] = {
+    _config = {map_entity = {"PoI", { marker_id = 1}}, permissions = {"emergency.vehicle"} },
+    -- WIP
   },
   ["bicycles"] = {
     _config = {map_entity = {"PoI", {blip_id = 376, blip_color = 4, marker_id = 1}}},
@@ -321,8 +363,12 @@ cfg.garages = {
   {"supercars",112.275, 6619.83, 31.8154},
   {"motorcycles",-205.789, -1308.02, 31.2916},
   {"taxi",-286.870056152344,-917.948181152344,31.080623626709},
-  {"police",454.4,-1017.6,28.4},
+  {"LSPD (Cadet)",449.82241821289,-1013.9649658203,28.488388061523}, --Mission Row
+  {"LSPD (Patrol)",449.82241821289,-1013.9649658203,28.488388061523}, --Mission Row
+  {"LSPD (Supervisor)",449.82241821289,-1013.9649658203,28.488388061523}, --Mission Row
+  {"LSPD (Command)",449.82241821289,-1013.9649658203,28.488388061523}, --Mission Row
   {"emergency",-492.08544921875,-336.749206542969,34.3731842041016},
+  {"Fire Department",1200.7218017578,-1494.0347900391,34.692577362061}, -- El Burro Hieghts FD
   {"bicycles",-352.038482666016,-109.240043640137,38.6970825195313},
   {"boats",-849.501281738281,-1367.69567871094,1.60516905784607},
   {"boats",1299.11730957031,4215.66162109375,33.9086799621582},

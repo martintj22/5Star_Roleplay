@@ -19,6 +19,7 @@ function police_init(user)
   vRP.EXT.PlayerState.remote._giveWeapons(user.source,weapons,true)
   vRP.EXT.Police.remote._setCop(user.source,true)
   vRP.EXT.PlayerState.remote._setArmour(user.source,100)
+  vRP.EXT.Functions.remote._onDuty(user.source)
 end
 
 function police_onjoin(user)
@@ -26,14 +27,32 @@ function police_onjoin(user)
 end
 
 function police_onleave(user)
-  vRP.EXT.PlayerState.remote._giveWeapons(user.source,{},true)
+  --vRP.EXT.PlayerState.remote._giveWeapons(user.source,{},true)
   vRP.EXT.Police.remote._setCop(user.source,false)
   vRP.EXT.PlayerState.remote._setArmour(user.source,0)
+  vRP.EXT.Functions.remote._offDuty(user.source)
   user:removeCloak()
 end
 
 function police_onspawn(user)
   police_init(user)
+end
+
+function ems_init(user)
+  vRP.EXT.Functions.remote._onDuty(user.source)
+end
+
+function police_onjoin(user)
+  ems_init(user)
+end
+
+function ems_onleave(user)
+  vRP.EXT.Functions.remote._offDuty(user.source)
+  user:removeCloak()
+end
+
+function ems_onspawn(user)
+  ems_init(user)
 end
 
 cfg.groups = {
@@ -74,9 +93,21 @@ cfg.groups = {
     "player.store_weapons",
     "police.seizable" -- can be seized
   },
-  ["police"] = {
+  --==========|===================|==========--
+  --==========|Whitelisting Groups|==========--
+  --==========|===================|==========-- 
+  ["police"] = { --add this group to users for whitelisted police roles. This group is used by department heads to hire and fire officers. DO NOT DELETE
+    "police.whitelisted"
+  },
+  ["DeptHead"] = { --add this group to users for whitelisted department head roles. DO NOT DELETE
+    "department.head.whitelisted"
+  },
+  --==========|===========|==========--
+  --==========|LSPD Groups|==========--
+  --==========|===========|==========--
+  ["cadet"] = {
     _config = {
-      title = "Police",
+      title = "LSPD Cadet",
       gtype = "job",
       onjoin = police_onjoin,
       onspawn = police_onspawn,
@@ -84,7 +115,7 @@ cfg.groups = {
     },
     "police.menu",
     "police.askid",
-    "police.cloakroom",
+    "lspdcadet.cloakroom",
     "police.pc",
     "police.handcuff",
     "police.drag",
@@ -99,10 +130,965 @@ cfg.groups = {
     "police.announce",
     "police.vehicle",
     "police.chest_seized",
-    "-player.store_weapons",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
---    "mission.paycheck.police" -- basic mission
   },
+  ["police1"] = {
+    _config = {
+      title = "Police Officer",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "officer.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle2",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["police2"] = {
+    _config = {
+      title = "Senior Police Officer",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "officer.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle2",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_corporal"] = {
+    _config = {
+      title = "LSPD Corporal",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdcorp.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle2",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_sgt"] = {
+    _config = {
+      title = "LSPD Sergeant",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdsgt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle3",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_lt"] = {
+    _config = {
+      title = "LSPD Lieutenant",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdlt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle3",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_cpt"] = {
+    _config = {
+      title = "LSPD Captain",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdcpt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle3",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_ltmjr"] = {
+    _config = {
+      title = "LSPD Lieutenant Major",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdltmjr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle3",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_mjr"] = {
+    _config = {
+      title = "LSPD Major",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdmjr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle4",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_cmdr"] = {
+    _config = {
+      title = "LSPD Commander",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdcmdr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle4",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_asscheif"] = {
+    _config = {
+      title = "LSPD Assistant Chief",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lspdasscheif.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle4",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_cheif"] = {
+    _config = {
+      title = "LSPD Chief",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.admin",
+    "police.menu",
+    "police.askid",
+    "lspdasscheif.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle4",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  --==========|===========|==========--
+  --==========|LSSD Groups|==========--
+  --==========|===========|==========--
+  ["cadet2"] = {
+    _config = {
+      title = "LSSD Cadet",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdcadet.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["deputy1"] = {
+    _config = {
+      title = "Sheriff's Deputy",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "deputy.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["deputy2"] = {
+    _config = {
+      title = "Senior Sheriff's Deputy",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "deputy.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_corporal"] = {
+    _config = {
+      title = "LSSD Corporal",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdcorp.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_sgt"] = {
+    _config = {
+      title = "LSSD Sergeant",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdsgt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_lt"] = {
+    _config = {
+      title = "LSSD Lieutenant",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdlt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_cpt"] = {
+    _config = {
+      title = "LSSD Captain",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdcpt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_ltmjr"] = {
+    _config = {
+      title = "LSSD Lieutenant Major",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdltmjr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_mjr"] = {
+    _config = {
+      title = "LSSD Major",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdmjr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_cmdr"] = {
+    _config = {
+      title = "LSSD Commander",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdcmdr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "police.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lspd_undersheriff"] = {
+    _config = {
+      title = "LSSD Undersheriff",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "lssdundersheriff.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["lssd_sheriff"] = {
+    _config = {
+      title = "LSSD Sheriff",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.admin",
+    "police.menu",
+    "police.askid",
+    "lssdsheriff.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "deputy.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  --==========|===========|==========--
+  --==========|SAHP Groups|==========--
+  --==========|===========|==========--
+  ["cadet3"] = {
+    _config = {
+      title = "SAHP Cadet",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpcadet.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["trooper"] = {
+    _config = {
+      title = "Trooper",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "trooper.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["trooper2"] = {
+    _config = {
+      title = "Senior Trooper",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "trooper.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_corporal"] = {
+    _config = {
+      title = "SAHP Corporal",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpcorp.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_sgt"] = {
+    _config = {
+      title = "SAHP Sergeant",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpsgt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_lt"] = {
+    _config = {
+      title = "SAHP Lieutenant",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahplt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_cpt"] = {
+    _config = {
+      title = "SAHP Captain",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpcpt.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_ltmjr"] = {
+    _config = {
+      title = "SAHP Lieutenant Major",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpltmjr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_mjr"] = {
+    _config = {
+      title = "SAHP Major",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpmjr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_cmdr"] = {
+    _config = {
+      title = "SAHP Commander",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpcmdr.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_depdirector"] = {
+    _config = {
+      title = "SAHP Deputy Director",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.menu",
+    "police.askid",
+    "sahpdepdirector.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ["sahp_director"] = {
+    _config = {
+      title = "SAHP Director",
+      gtype = "job",
+      onjoin = police_onjoin,
+      onspawn = police_onspawn,
+      onleave = police_onleave
+    },
+    "police.admin",
+    "police.menu",
+    "police.askid",
+    "sahpdirector.cloakroom",
+    "police.pc",
+    "police.handcuff",
+    "police.drag",
+    "police.putinveh",
+    "police.getoutveh",
+    "police.check",
+    "police.service",
+    "police.wanted",
+    "police.seize",
+    "police.jail",
+    "police.fine",
+    "police.announce",
+    "highway.vehicle",
+    "police.chest_seized",
+    "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
+  },
+  ----------------
+  -----EMS--------
+  ----------------
   ["emergency"] = {
     _config = {
       title = "Emergency",
@@ -166,6 +1152,15 @@ cfg.selectors = {
     _config = {x = -268.363739013672, y = -957.255126953125, z = 31.22313880920410, map_entity = {"PoI", {blip_id = 351, blip_color = 47, marker_id = 1}}},
     "taxi",
     "repair",
+    "citizen"
+  },
+  
+  --=====|====|=====--
+  --=====|LSPD|=====--
+  --=====|====|=====--
+  ["Mission Row PD (Cadet)"] = {
+    _config = {x = 440.72769165039, y = -975.77941894531, z = 30.689332962036, permissions={"police.whitelisted"}, map_entity = {"PoI", {marker_id = 1}}},
+    "cadet",
     "citizen"
   },
   ["Police job"] = {

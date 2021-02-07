@@ -513,7 +513,7 @@ cfg.selectors = {
     "Borger"
   },
   ["Emergency job"] = {
-    _config = {x=-498.959716796875, y=-335.715148925781, z=34.5017547607422, permissions={"EMS.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 1, marker_id = 1}}},
+    _config = {x = -498.959716796875, y = -335.715148925781, z = 34.5017547607422, permissions={"EMS.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 1, marker_id = 1}}},
     "emergency",
     "Borger"
   }

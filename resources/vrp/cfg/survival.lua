@@ -1,9 +1,9 @@
 
 local cfg = {
   vital_display = true,
-  vital_display_anchor = "minimap",
-  water_per_minute = 0.000,
-  food_per_minute = 0.0000,
+  --vital_display_anchor = "minimap",
+  water_per_minute = 0.005,
+  food_per_minute = 0.0005,
   overflow_damage_factor = 2,
   pvp = true,
   police = false

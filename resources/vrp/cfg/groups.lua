@@ -102,9 +102,6 @@ cfg.groups = {
   ["DeptHead"] = { --add this group to users for whitelisted department head roles. DO NOT DELETE
     "department.head.whitelisted"
   },
-  ["EMS"] = { --add this group to users for whitelisted department head roles. DO NOT DELETE
-    "EMS.whitelisted"
-  },
   --==========|===========|==========--
   --==========|LSPD Groups|==========--
   --==========|===========|==========--

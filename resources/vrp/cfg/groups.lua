@@ -506,14 +506,14 @@ cfg.selectors = {
   --=====|LSPD|=====--
   --=====|====|=====--
   ["Police job"] = {
-    _config = {x = 437.924987792969,y = -987.974182128906, z = 30.6896076202393, permissions={"police.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 38, marker_id = 1}}},
+    _config = {x = 437.924987792969, y = -987.974182128906, z = 30.6896076202393, permissions={"police.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 38, marker_id = 1}}},
     "cadet",
     "police1",
     "police2",
     "Borger"
   },
   ["Emergency job"] = {
-    _config = {x=-498.959716796875,y=-335.715148925781,z=34.5017547607422, permissions={"EMS.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 1, marker_id = 1}}},
+    _config = {x = -498.959716796875, y = -335.715148925781, z = 34.5017547607422, permissions={"EMS.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 1, marker_id = 1}}},
     "emergency",
     "Borger"
   }

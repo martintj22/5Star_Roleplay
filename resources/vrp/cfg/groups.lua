@@ -102,6 +102,9 @@ cfg.groups = {
   ["DeptHead"] = { --add this group to users for whitelisted department head roles. DO NOT DELETE
     "department.head.whitelisted"
   },
+  ["EMS"] = { --add this group to users for whitelisted department head roles. DO NOT DELETE
+    "EMS.whitelisted"
+  },
   --==========|===========|==========--
   --==========|LSPD Groups|==========--
   --==========|===========|==========--
@@ -505,8 +508,8 @@ cfg.selectors = {
   ["Police job"] = {
     _config = {x = 437.924987792969,y = -987.974182128906, z = 30.6896076202393, permissions={"police.whitelisted"} map_entity = {"PoI", {blip_id = 351, blip_color = 38, marker_id = 1}}},
     "cadet",
-    "police1,"
-    "police2,"
+    "police1,",
+    "police2,",
     "Borger"
   },
   ["Emergency job"] = {

@@ -1,6 +1,5 @@
 fx_version "adamant"
-
-game "gta5"
+games {"gta5"}
 
 description "RP module/framework"
 
@@ -13,6 +12,7 @@ server_scripts{
   "modules/map.lua",
   "modules/gui.lua",
   "modules/audio.lua",
+  "modules/login.lua",
   "modules/admin.lua",
   "modules/identity.lua",
   "modules/group.lua",
@@ -39,7 +39,8 @@ server_scripts{
   "modules/ped_blacklist.lua",
   "modules/veh_blacklist.lua",
   "modules/edible.lua",
-  "modules/warp.lua"
+  "modules/warp.lua",
+  "modules/profiler.lua"
 }
 
 -- client scripts
@@ -71,6 +72,7 @@ files{
   "lib/IDManager.lua",
   "lib/ActionDelay.lua",
   "lib/Luang.lua",
+  "lib/ELProfiler.lua",
   "client/vRP.lua",
   "vRPShared.lua",
   "cfg/client.lua",

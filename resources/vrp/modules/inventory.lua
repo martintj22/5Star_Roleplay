@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.inventory then return end
 
 local htmlEntities = module("vrp", "lib/htmlEntities")
@@ -147,49 +150,38 @@ local function menu_inventory_item(self)
     local user = menu.user
     local fullid = menu.data.fullid
     local citem = self:computeItem(fullid)
-    local dead = vRP.EXT.Survival.remote.isInComa(user.source)
 
-    if not dead then	
+    -- get nearest player
+    local nuser
+    local nplayer = vRP.EXT.Base.remote.getNearestPlayer(user.source, 10)
+    if nplayer then nuser = vRP.users_by_source[nplayer] end
 
-      -- get nearest player
-      local nuser
-      local nplayer = vRP.EXT.Base.remote.getNearestPlayer(user.source, 10)
-      if nplayer then nuser = vRP.users_by_source[nplayer] end
+    if nuser then
+      -- prompt number
+      local amount = parseInt(user:prompt(lang.inventory.give.prompt({user:getItemAmount(fullid)}),""))
 
-      if nuser then
-        -- prompt number
-        local amount = parseInt(user:prompt(lang.inventory.give.prompt({user:getItemAmount(fullid)}),""))
+      if nuser:tryGiveItem(fullid,amount,true) then
+        if user:tryTakeItem(fullid,amount,true) then
+          user:tryTakeItem(fullid, amount)
+          nuser:tryGiveItem(fullid, amount)
 
-        if nuser:tryGiveItem(fullid,amount,true) then
-          if user:tryTakeItem(fullid,amount,true) then
-            if fullid == "gift" then
-              user:tryTakeItem(fullid, amount)
-              nuser:tryGiveItem("gift2", amount)
-            else
-              user:tryTakeItem(fullid, amount)
-              nuser:tryGiveItem(fullid, amount)
-            end
-
-            if user:getItemAmount(fullid) > 0 then
-              user:actualizeMenu()
-            else
-              user:closeMenu(menu)
-            end
-
-            vRP.EXT.Base.remote._playAnim(user.source,true,{{"mp_common","givetake1_a",1}},false)
-            vRP.EXT.Base.remote._playAnim(nuser.source,true,{{"mp_common","givetake2_a",1}},false)
+          if user:getItemAmount(fullid) > 0 then
+            user:actualizeMenu()
           else
-            vRP.EXT.Base.remote._notify(user.source,lang.common.invalid_value())
+            user:closeMenu(menu)
           end
+
+          vRP.EXT.Base.remote._playAnim(user.source,true,{{"mp_common","givetake1_a",1}},false)
+          vRP.EXT.Base.remote._playAnim(nuser.source,true,{{"mp_common","givetake2_a",1}},false)
         else
-          vRP.EXT.Base.remote._notify(user.source,lang.inventory.full())
+          vRP.EXT.Base.remote._notify(user.source,lang.common.invalid_value())
         end
       else
-        vRP.EXT.Base.remote._notify(user.source,lang.common.no_player_near())
+        vRP.EXT.Base.remote._notify(user.source,lang.inventory.full())
       end
     else
-	    vRP.EXT.Base.remote._notify(user.source, "~r~You cannot Give while in Coma, Call EMS!")
-	  end
+      vRP.EXT.Base.remote._notify(user.source,lang.common.no_player_near())
+    end
   end
 
   -- trash action
@@ -198,26 +190,20 @@ local function menu_inventory_item(self)
     local fullid = menu.data.fullid
     local citem = self:computeItem(fullid)
 
-    local dead = vRP.EXT.Survival.remote.isInComa(user.source)
-
-    if not dead then	
-      -- prompt number
-      local amount = parseInt(user:prompt(lang.inventory.trash.prompt({user:getItemAmount(fullid)}),""))
-      if user:tryTakeItem(fullid,amount,nil,true) then
-        if user:getItemAmount(fullid) > 0 then
-          user:actualizeMenu()
-        else
-          user:closeMenu(menu)
-        end
-
-        vRP.EXT.Base.remote._notify(user.source,lang.inventory.trash.done({citem.name,amount}))
-        vRP.EXT.Base.remote._playAnim(user.source,true,{{"pickup_object","pickup_low",1}},false)
+    -- prompt number
+    local amount = parseInt(user:prompt(lang.inventory.trash.prompt({user:getItemAmount(fullid)}),""))
+    if user:tryTakeItem(fullid,amount,nil,true) then
+      if user:getItemAmount(fullid) > 0 then
+        user:actualizeMenu()
       else
-        vRP.EXT.Base.remote._notify(user.source,lang.common.invalid_value())
+        user:closeMenu(menu)
       end
+
+      vRP.EXT.Base.remote._notify(user.source,lang.inventory.trash.done({citem.name,amount}))
+      vRP.EXT.Base.remote._playAnim(user.source,true,{{"pickup_object","pickup_low",1}},false)
     else
-	    vRP.EXT.Base.remote._notify(user.source, "~r~You cannot Trash while in Coma, Call EMS!")
-	  end
+      vRP.EXT.Base.remote._notify(user.source,lang.common.invalid_value())
+    end
   end
 
   vRP.EXT.GUI:registerMenuBuilder("inventory.item", function(menu)
@@ -470,8 +456,7 @@ function Inventory:__construct()
   menu_admin_users_user(self)
 
   local function m_inventory(menu)
-    TriggerClientEvent("inventoryHud:openInventory", menu.user.source)
-    --menu.user:openMenu("inventory")
+    menu.user:openMenu("inventory")
   end
 
   vRP.EXT.GUI:registerMenuBuilder("main", function(menu)
@@ -481,7 +466,7 @@ function Inventory:__construct()
   -- define config items
   local cfg_items = module("cfg/items")
   for id,v in pairs(cfg_items.items) do
-    self:defineItem(id,v[1],v[2],v[3],v[4],v[5],v[6],v[7])
+    self:defineItem(id,v[1],v[2],v[3],v[4])
   end
 
   -- transformer processor
@@ -558,12 +543,12 @@ end
 --
 -- genfunction are functions returning a correct value as: function(args, ...)
 -- where args is a list of {base_idname,args...}
-function Inventory:defineItem(id,name,description,menu_builder,weight,itype,icon,usable)
+function Inventory:defineItem(id,name,description,menu_builder,weight)
   if self.items[id] then
     self:log("WARNING: re-defined item \""..id.."\"")
   end
 
-  self.items[id] = {name=name,description=description,menu_builder=menu_builder,weight=weight, itype=itype, icon=icon, usable = usable}
+  self.items[id] = {name=name,description=description,menu_builder=menu_builder,weight=weight}
 end
 
 
@@ -616,34 +601,7 @@ function Inventory:computeItem(fullid)
 
       if not weight then weight = 0 end
 
-      local itype
-      if type(item.itype) == "string" then
-        itype = item.itype
-      elseif item.itype then
-        itype = item.itype(args)
-      end
-
-      if not itype then itype = fullid end
-
-      local icon
-      if type(item.icon) == "string" then
-        icon = item.icon
-      elseif item.icon then
-        icon = item.icon(args)
-      end
-
-      if not icon then icon = "apple" end
-
-      local usable
-      if type(item.usable) == "string" then 
-        usable = item.usable
-      elseif item.usable then
-        usable = item.usable(args)
-      end
-
-      if not usable then usable = "no" end
-
-      citem = {name=name, description=desc, weight=weight, menu_builder = item.menu_builder, args = args, itype=itype, icon=icon, usable = usable}
+      citem = {name=name, description=desc, weight=weight, menu_builder = item.menu_builder, args = args}
       self.computed_items[fullid] = citem
     end
   end

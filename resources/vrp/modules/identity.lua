@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.identity then return end
 
 -- this module describe the identity system
@@ -118,9 +121,7 @@ local function menu_admin_users_user(self)
     local tuser = vRP.users[menu.data.id]
 
     if tuser then
-      if user:hasPermission("player.info") then
-        menu:addOption(lang.identity.title(), m_identity)
-      end
+      menu:addOption(lang.identity.title(), m_identity)
     end
   end)
 end
@@ -209,7 +210,7 @@ function Identity:generateRegistrationNumber()
   local registration = ""
   -- generate registration number
   repeat
-    registration = Identity.generateStringNumber("DDLLLDDD")
+    registration = Identity.generateStringNumber("DDDLLL")
     character_id = self:getByRegistration(registration)
   until not character_id
 

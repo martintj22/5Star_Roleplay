@@ -32,6 +32,26 @@ local lang = {
       error = "~r~Couldn't delete character #{1}."
     }
   },
+  login = {
+    info = {
+      title = "Login info",
+      description = "<em>Whitelisted: </em>{1}<br /><em>Banned: </em>{2}<br /><em>Ban reason: </em>{3}<br /><br />(valid to update)"
+    },
+    ban = {
+      title = "Ban",
+      prompt_duration = "Duration (-1: \"forever\", X: seconds, Xm: minutes, Xh: hours, Xd: days):",
+      prompt_reason = "Reason: "
+    },
+    unban = {
+      title = "Unban"
+    },
+    whitelist = {
+      title = "Whitelist user"
+    },
+    unwhitelist = {
+      title = "Un-whitelist user"
+    }
+  },
   admin = {
     title = "Admin",
     call_admin = {
@@ -88,24 +108,11 @@ local lang = {
         title = "#{1}: {2}",
         info = {
           title = "Info",
-          description = "<em>Endpoint: </em>{1}<br /><em>Source: </em>{2}<br /><em>Last login: </em>{3}<br /><em>Character id: </em>{4}<br /><em>Banned: </em>{5}<br /><em>Whitelisted: </em>{6}<br /><br />(valid to update)"
+          description = "<em>Endpoint: </em>{1}<br /><em>Source: </em>{2}<br /><em>Last login: </em>{3}<br /><em>Character id: </em>{4}<br /><br /><br />(valid to update)"
         },
         kick = {
           title = "Kick",
           prompt = "Reason: "
-        },
-        ban = {
-          title = "Ban",
-          prompt = "Reason: "
-        },
-        unban = {
-          title = "Unban"
-        },
-        whitelist = {
-          title = "Whitelist user"
-        },
-        unwhitelist = {
-          title = "Un-whitelist user"
         },
         tptome = {
           title = "TpToMe"
@@ -125,18 +132,6 @@ local lang = {
           title = "Remove group",
           prompt = "Group to remove: "
         },
-        group_hire = {
-          title = "PD Hire",
-        },
-        group_fire = {
-          title = "PD Fire",
-        },
-        group_hire2 = {
-          title = "FD Hire",
-        },
-        group_fire2 = {
-          title = "FD Fire",
-        },
         give_money = {
           title = "Give money",
           prompt = "Amount: "
@@ -153,21 +148,6 @@ local lang = {
   weapon = {
     -- weapon translation by GTA 5 weapon name (lower case)
     pistol = "Pistol"
-  },
-  component = {
-    -- weapon translation by GTA 5 weapon name 
-    AT_PI_SUPP = "Pistol Silencer",
-    AT_AR_FLSH = "Rifle Flashlight",
-    AT_PI_FLSH = "Pistol Flashlight"
-  },  
-  tint = {
-    green = "Green",
-    gold = "Gold",
-    pink = "Pink",
-    army = "Army",
-    lspd = "LSPD",
-    orange = "Orange",
-    platinum = "Chrome plated"
   },
   item = {
     medkit = {
@@ -202,20 +182,6 @@ local lang = {
       description = "Weapon body of {1}.",
       equip = {
         title = "Equip"
-      }
-    },
-    wcomp = {
-      name = "{1} Component",
-      description = "Component {1}.",
-      equip = {
-      title = "Equip"
-      }
-    },    
-    wtint = {
-      name = "Tint {1}",
-      description = "Color {1}.",
-      equip = {
-      title = "Paint"
       }
     },
     wammo = {
@@ -758,6 +724,15 @@ local lang = {
   radio = {
     title = "Radio ON/OFF",
     description = "Allow to speak with [TEAM TEXT CHAT] and broadcast a GPS signal when ON."
+  },
+  profiler = {
+    title_server = "[Profiler:server]",
+    title_client = "[Profiler:client]",
+    prompt_resources = "Resource names to profile (line/space separated; empty for all) ?",
+    prompt_duration = "Duration (seconds) ?",
+    prompt_stack_depth = "Stack dump depth ? A higher value can help to locate hotpots more precisely.",
+    prompt_aggregate = "Aggregate profiles (yes/no) ? If yes, it will aggregate all profiles into a single one instead of one per resource.",
+    prompt_report = "Profiler report (copy with Ctrl-A Ctrl-C)."
   }
 }
 

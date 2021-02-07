@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.survival then return end
 
 local lang = vRP.lang
@@ -58,8 +61,7 @@ function Survival:__construct()
   self:registerVital("food", 0.75)
 
   -- items
-  -- vRP.EXT.Inventory:defineItem("medkit", lang.item.medkit.name(), lang.item.medkit.description(), nil, 0.5)
-  -- vRP.EXT.Inventory:defineItem("bandage", "bandages", "Used to heal minor wounds.", nil, 0.1)
+  vRP.EXT.Inventory:defineItem("medkit", lang.item.medkit.name(), lang.item.medkit.description(), nil, 0.5)
 
   -- water/food task increase
   local function task_update()
@@ -83,29 +85,6 @@ function Survival:__construct()
     {"amb@medic@standing@kneel@idle_a","idle_a",1},
     {"amb@medic@standing@kneel@exit","exit",1}
   }
-
-  local function m_heal(menu)
-    local user = menu.user
-
-    local nuser
-    local nplayer = vRP.EXT.Base.remote.getNearestPlayer(user.source,10)
-    if nplayer then nuser = vRP.users_by_source[nplayer] end
-    if nuser then
-      if self.remote.isInComa(nuser.source) then
-        vRP.EXT.Base.remote._notify(user.source,"~r~A bandage won't help this person.")
-      else
-        if user:tryTakeItem("bandage",1) then
-          vRP.EXT.Base.remote._playAnim(user.source,false,{{"mp_arresting", "a_uncuff",5}},false) -- anim
-          SetTimeout(15000, function()
-            self.remote._varyHealth(nuser.source,10) -- heal 10
-            --nuser:giveDebt(1000)
-          end)
-        end
-      end
-    else
-      vRP.EXT.Base.remote._notify(user.source,"~g~Applying a bandage.")
-    end
-  end
 
   local function m_revive(menu)
     local user = menu.user
@@ -133,9 +112,6 @@ function Survival:__construct()
   vRP.EXT.GUI:registerMenuBuilder("main", function(menu)
     if menu.user:hasPermission("emergency.revive") then
       menu:addOption(lang.emergency.menu.revive.title(), m_revive, lang.emergency.menu.revive.description())
-    end
-    if menu.user:hasPermission("user.heal") then
-      menu:addOption(lang.heal.menu.heal.title(), m_heal, lang.heal.menu.heal.description())
     end
   end)
 end

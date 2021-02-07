@@ -1,3 +1,29 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
+--[[
+MIT License
+
+Copyright (c) 2017 ImagicTheCat
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+]]
 
 local vRPShared = class("vRPShared")
 
@@ -105,12 +131,10 @@ end
 function vRPShared:triggerEvent(name, ...)
   local exts = self.ext_listeners[name]
   if exts then
-    local params = {...}
-    local max = table_maxn(params)
-
+    local params = table.pack(...)
     for ext,func in pairs(exts) do
       async(function()
-        func(ext, table.unpack(params, 1, max))
+        func(ext, table.unpack(params, 1, params.n))
       end)
     end
   end
@@ -120,26 +144,21 @@ end
 function vRPShared:triggerEventSync(name, ...)
   local exts = self.ext_listeners[name]
   if exts then
-    local params = {...}
-    local max = table_maxn(params)
+    local params = table.pack(...)
     local count = 0
-
     local r = async()
-
-    for ext,func in pairs(exts) do
+    for ext, func in pairs(exts) do
       count = count+1
     end
-
     for ext,func in pairs(exts) do
       async(function()
-        func(ext, table.unpack(params, 1,max))
+        func(ext, table.unpack(params, 1, params.n))
         count = count-1
         if count == 0 then -- all done
           r()
         end
       end)
     end
-
     r:wait() -- wait events completion
   end
 end

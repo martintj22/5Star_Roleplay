@@ -1,138 +1,13 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.player_state then return end
 
 local lang = vRP.lang
 
 local PlayerState = class("PlayerState", vRP.Extension)
 
-PlayerState.globalTintTable = {
-	mk1 = {
-		{ 1, "TINT_Green" },
-		{ 2, "TINT_Gold" },
-		{ 3, "TINT_Pink" },
-		{ 4, "TINT_Army" },
-		{ 5, "TINT_LSPD" },
-		{ 6, "TINT_Orange" },
-		{ 7, "TINT_Platinum" },
-		{ 1, "TINT_Classic Gray" },
-		{ 2, "TINT_Classic TwoTone" },
-		{ 3, "TINT_Classic White" },
-		{ 4, "TINT_Classic Beige" },
-		{ 5, "TINT_Classic Green" },
-		{ 6, "TINT_Classic Blue" },
-		{ 7, "TINT_Classic Earth" },
-		{ 8, "TINT_Classic Brown And Black" },
-		{ 9, "TINT_Red Contrast" },
-		{ 10, "TINT_Blue Contrast" },
-		{ 11, "TINT_Yellow Contrast" },
-		{ 12, "TINT_Orange Contrast" },
-		{ 13, "TINT_Bold Pink" },
-		{ 14, "TINT_Bold Purple And Yellow" },
-		{ 15, "TINT_Bold Orange" },
-		{ 16, "TINT_Bold Green And Purple" },
-		{ 17, "TINT_Bold Red Features" },
-		{ 18, "TINT_Bold Green Features" },
-		{ 19, "TINT_Bold Cyan Features" },
-		{ 20, "TINT_Bold Yellow Features" },
-		{ 21, "TINT_Bold Red And White" },
-		{ 22, "TINT_Bold Blue And White" },
-		{ 23, "TINT_Metallic Gold" },
-		{ 24, "TINT_Metallic Platinum" },
-		{ 25, "TINT_Metallic Gray And Lilac" },
-		{ 26, "TINT_Metallic Purple And Lime" },
-		{ 27, "TINT_Metallic Red" },
-		{ 28, "TINT_Metallic Green" },
-		{ 29, "TINT_Metallic Blue" },
-		{ 30, "TINT_Metallic White And Aqua" },
-		{ 31, "TINT_Metallic Red And Yellow" },
-  }
-}
 -- PRIVATE METHODS
-
--- MENU TINTAS
-local function tinta(self)
-  
-  local function get_wname(weapon_id)
-    local name = string.gsub(weapon_id,"WEAPON_","")
-    name = string.upper(string.sub(name,1,1))..string.lower(string.sub(name,2))
-    -- lang translation support, ex: weapon.pistol = "Pistol", by default use the native name
-    return lang.weapon[string.lower(name)]({}, name)
-  end
-
-  local function m_wtint_equip(menu, weapon)
-    local user = menu.user
-    local fullid = menu.data.tintname
-    local tintindex = 0
-    local citem = vRP.EXT.Inventory:computeItem("wtint|"..fullid)
-    --print(citem.args[2])
-    if user:tryTakeItem("wtint|"..fullid, 1) then -- give weapon body
-      for k,v in pairs(PlayerState.globalTintTable.mk1) do
-          if citem.args[2] == v[2] then
-             tintindex = v[1]
-          end
-      end
-      self.remote._giveWeaponTint(user.source, tintindex, weapon)
-      local namount = user:getItemAmount(fullid)
-      if namount > 0 then
-        user:actualizeMenu()
-      else
-        user:closeMenu(menu)
-      end
-    end
-  end
-
-  vRP.EXT.GUI:registerMenuBuilder("paint", function(menu)
-    menu.title = "Choose which weapon to paint"
-    menu.css.header_color = "rgba(255,125,0,0.75)"
-    local user = menu.user
-	  local weapons = self.remote.getWeapons(user.source)
-	  for k,v in pairs(weapons) do 
-  		menu:addOption(get_wname(k), m_wtint_equip, "paint this gun", k)
-	  end
-  end)
-end
-
-local function componente(self)
-  local function get_wname(weapon_id)
-    local name = string.gsub(weapon_id,"WEAPON_","")
-    name = string.upper(string.sub(name,1,1))..string.lower(string.sub(name,2))
-    -- lang translation support, ex: weapon.pistol = "Pistol", by default use the native name
-    return lang.weapon[string.lower(name)]({}, name)
-  end
-
-  local function m_wcomp_equip(menu, weapon)
-    local user = menu.user
-    local fullid = menu.data.componente
-    local citem = vRP.EXT.Inventory:computeItem("wcomp|"..fullid)
-    --print(citem.args[2])
-      local components = {}
-      components[citem.args[2]] = {use = 0}
-      if self.remote.giveWeaponsComponents(user.source, citem.args[2], weapon) then
-        if user:tryTakeItem("wcomp|"..fullid, 1) then -- give weapon body
-          local namount = user:getItemAmount(fullid)
-          if namount > 0 then
-            user:actualizeMenu()
-          else
-            user:closeMenu(menu)
-          end
-        else
-          vRP.EXT.Base.remote._notify(user.source,"Missing component")
-        end
-      else
-        vRP.EXT.Base.remote._notify(user.source,"Not compatible with this weapon")   
-        user:closeMenu(menu)     
-      end
-  end
-
-  vRP.EXT.GUI:registerMenuBuilder("component", function(menu)
-    menu.title = "Choose which weapon to equip"
-    menu.css.header_color = "rgba(255,125,0,0.75)"
-    local user = menu.user
-	  local weapons = self.remote.getWeapons(user.source)
-	  for k,v in pairs(weapons) do 
-		  menu:addOption(get_wname(k), m_wcomp_equip, "", k)
-	  end
-  end)
-end
 
 local function define_items(self)
   -- parametric weapon items
@@ -147,30 +22,10 @@ local function define_items(self)
     return lang.weapon[string.lower(name)]({}, name)
   end
 
-  local function get_wcomp(weapon_id)
-
-    local name = string.gsub(weapon_id,"COMPONENT_","")
-    name = string.upper(string.sub(name,1,1))..string.lower(string.sub(name,2))
-    -- lang translation support, ex: weapon.pistol = "Pistol", by default use the native name
-    return lang.component[string.upper(name)]({}, name)
-  end
-
-  local function get_wtint(weapon_id)
-
-    local name = string.gsub(weapon_id,"TINT_","")
-    name = string.upper(string.sub(name,1,1))..string.lower(string.sub(name,2))
-    -- lang translation support, ex: weapon.pistol = "Pistol", by default use the native name
-    return lang.tint[string.lower(name)]({}, name)
-  end
-
   -- wbody
 
   local function i_wbody_name(args)
     return lang.item.wbody.name({get_wname(args[2])})
-  end
-
-  local function i_wbody_icon(args)
-    return args[2]
   end
 
   local function i_wbody_desc(args)
@@ -200,7 +55,7 @@ local function define_items(self)
     menu:addOption(lang.item.wbody.equip.title(), m_wbody_equip)
   end
 
-  vRP.EXT.Inventory:defineItem("wbody",i_wbody_name,i_wbody_desc,i_wbody_menu,1.0, "weapon", i_wbody_icon, "yes")
+  vRP.EXT.Inventory:defineItem("wbody",i_wbody_name,i_wbody_desc,i_wbody_menu,0.75)
 
   -- wammo
 
@@ -271,63 +126,7 @@ local function define_items(self)
     end
   end
 
-  vRP.EXT.Inventory:defineItem("wammo", i_wammo_name,i_wammo_desc,i_wammo_menu,0.01, "ammo", "clip", "yes")
-
-  -- wcomp
-
-  local function i_wcomp_name(args)
-   
-    return lang.item.wcomp.name({get_wcomp(args[2])})
-  end
-
-  local function i_wcomp_desc(args)
- 
-    return lang.item.wcomp.description({get_wcomp(args[2])})
-  end
-
-
-  local function i_wcomp_menu(args, menu)
-    menu:addOption(lang.item.wcomp.equip.title(), function(menu)
-      menu.user:openMenu("component", {componente = args[2]})
-    end)
-  end
-
-  vRP.EXT.Inventory:defineItem("wcomp",i_wcomp_name,i_wcomp_desc,i_wcomp_menu,0.25, "comp", "comp", "yes")
-
--- wtint
-
-  local function i_wtint_name(args)
-  
-    return lang.item.wtint.name({get_wtint(args[2])})
-  end
-
-  local function i_wtint_desc(args)
- 
-    return lang.item.wtint.description({get_wtint(args[2])})
-  end
-
-  local function i_wtint_menu(args, menu)
-  	
-  	 menu:addOption(lang.item.wtint.equip.title(), function(menu)
-      menu.user:openMenu("paint", {tintname = args[2]})
-    end)
-  end
-
-  vRP.EXT.Inventory:defineItem("wtint",i_wtint_name,i_wtint_desc,i_wtint_menu,0.05, "tint", "tint", "yes")
-
-end
--- PRIVATE METHODS
-
-function PlayerState:setTint(source, tint)
-  local user = vRP.users_by_source[source]
-  local citem = vRP.EXT.Inventory:computeItem(tint)
-  user:openMenu("tinta", {tintname = citem.args[2]})
-end
-
-function PlayerState:setComp(source, comp)
-  local user = vRP.users_by_source[source]
-  local citem = vRP.EXT.Inventory:computeItem(comp)
-  user:openMenu("componente", {componente = citem.args[2]})
+  vRP.EXT.Inventory:defineItem("wammo", i_wammo_name,i_wammo_desc,i_wammo_menu,0.01)
 end
 
 -- PRIVATE METHODS
@@ -368,8 +167,6 @@ function PlayerState:__construct()
   self.cfg = module("vrp", "cfg/player_state")
 
   menu_admin(self)
-  tinta(self)
-  componente(self)
 
   -- items
   define_items(self)

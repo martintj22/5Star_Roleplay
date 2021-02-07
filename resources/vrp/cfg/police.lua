@@ -6,24 +6,23 @@ cfg.pc_map_entity = {"PoI", {marker_id = 1}}
 
 -- PCs positions
 cfg.pcs = {
-  {459.79330444336,-988.86315917969,24.914716720581}, --Mission Row PD
-  {441.9267578125,-978.76965332031,30.689336776733}, --Mission Row PD
-  {-434.43103027344,5997.0390625,31.716194152832}, --Paleto SO
-  {-449.66744995117,6012.3471679688,31.716329574585}, --Paleto SO
+  {437.14007568359,-996.31872558594,30.689586639404},
+  {441.97839355469,-978.94622802734,30.689605712891},
+  {459.74328613281,-988.95098876953,24.914869308472}
 }
 
 -- vehicle tracking configuration
 cfg.trackveh = {
   min_time = 300, -- min time in seconds
   max_time = 600, -- max time in seconds
-  service = "911" -- service to alert when the tracking is successful
+  service = "police" -- service to alert when the tracking is successful
 }
 
 -- wanted display
 -- map_entity: {ent,cfg} will fill cfg.player (server id), cfg.title
 cfg.wanted = {
-  map_entity = {"PlayerMark", {blip_id = 161, blip_color = 38}},
-  service = "911"
+  map_entity = {"PlayerMark", {blip_id = 458, blip_color = 38}},
+  service = "police"
 }
 
 -- illegal items (seize)
@@ -32,16 +31,7 @@ cfg.seizable_items = {
   "dirty_money",
   "weed",
   "*wbody",
-  "*wammo",
-  "stolen_credit",
-  "bank_money",
-  "weed_processed",
-  "edible|meth",
-  "edible|cocaine",
-  "methpipe",
-  "lockpick",
-  "upperR",
-  "lowerR",
+  "*wammo"
 }
 
 -- jails {x,y,z,radius}

@@ -1,13 +1,13 @@
--- loaded client-side and server-side
+-- Loaded client-side and server-side.
 --
--- enable/disable some modules
--- some modules may be required by others
--- it's recommended to disable things from the modules configurations directly if possible
+-- Enable/disable modules (some may be required by others).
+-- It's recommended to disable things from the modules configurations directly if possible.
 
 local modules = {
   map = true,
   gui = true,
   audio = true,
+  login = true,
   admin = true,
   identity = true,
   group = true,
@@ -24,7 +24,7 @@ local modules = {
   mission = true,
   cloak = true,
   garage = true,
-  business = false,
+  business = true,
   transformer = true,
   hidden_transformer = true,
   home = true,
@@ -34,7 +34,9 @@ local modules = {
   ped_blacklist = true,
   veh_blacklist = true,
   edible = true,
-  warp = true
+  warp = true,
+  --
+  profiler = false
 }
 
 return modules

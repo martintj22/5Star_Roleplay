@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.admin then return end
 
 local htmlEntities = module("lib/htmlEntities")
@@ -21,54 +24,17 @@ local function menu_admin_users_user(self)
       htmlEntities.encode(tuser and tuser.endpoint or "offline"), -- endpoint
       tuser and tuser.source or "offline", -- source
       tuser and tuser.last_login or "offline", -- last login
-      tuser and tuser.cid or "none", -- character id
-      vRP:isBanned(id) and "true" or "false", -- banned
-      vRP:isWhitelisted(id) and "true" or "false" -- whitelisted
+      tuser and tuser.cid or "none" -- character id
     }))
   end
 
   local function m_kick(menu)
     local user = menu.user
     local tuser = vRP.users[menu.data.id]
-
     if tuser then
-      local reason = user:prompt(lang.admin.users.user.kick.prompt(),"")
-      vRP:kick(tuser,reason)
+      local reason = user:prompt(lang.admin.users.user.kick.prompt(), "")
+      vRP:kick(tuser, reason)
     end
-  end
-
-  local function m_ban(menu)
-    local user = menu.user
-    local id = menu.data.id
-    local tuser = vRP.users[id]
-
-    if tuser then -- online
-      local reason = user:prompt(lang.admin.users.user.ban.prompt(),"")
-      vRP:ban(tuser,reason)
-    else -- offline
-      vRP:setBanned(id,true)
-    end
-  end
-
-  local function m_unban(menu)
-    local user = menu.user
-    local id = menu.data.id
-
-    vRP:setBanned(id,false)
-  end
-
-  local function m_whitelist(menu)
-    local user = menu.user
-    local id = menu.data.id
-
-    vRP:setWhitelisted(id,true)
-  end
-
-  local function m_unwhitelist(menu)
-    local user = menu.user
-    local id = menu.data.id
-
-    vRP:setWhitelisted(id,false)
   end
 
   local function m_tptome(menu)
@@ -104,24 +70,11 @@ local function menu_admin_users_user(self)
     end
 
     menu.css.header_color = "rgba(200,0,0,0.75)"
-    if user:hasPermission("player.info") then
-      menu:addOption(lang.admin.users.user.info.title(), m_info, lang.admin.users.user.info.description())
-    end
+
+    menu:addOption(lang.admin.users.user.info.title(), m_info, lang.admin.users.user.info.description())
+
     if tuser and user:hasPermission("player.kick") then
       menu:addOption(lang.admin.users.user.kick.title(), m_kick)
-    end
-
-    if user:hasPermission("player.ban") then
-      menu:addOption(lang.admin.users.user.ban.title(), m_ban)
-    end
-    if user:hasPermission("player.unban") then
-      menu:addOption(lang.admin.users.user.unban.title(), m_unban)
-    end
-    if user:hasPermission("player.whitelist") then
-      menu:addOption(lang.admin.users.user.whitelist.title(), m_whitelist)
-    end
-    if user:hasPermission("player.unwhitelist") then
-      menu:addOption(lang.admin.users.user.unwhitelist.title(), m_unwhitelist)
     end
     if tuser and user:hasPermission("player.tptome") then
       menu:addOption(lang.admin.users.user.tptome.title(), m_tptome)
@@ -153,25 +106,6 @@ local function menu_admin_users(self)
 
     for id, user in pairs(vRP.users) do
       menu:addOption(lang.admin.users.user.title({id, htmlEntities.encode(user.name)}), m_user, nil, id)
-    end
-  end)
-end
-
--- menu: police admin
--- used by the Police Chief, Sheriff or State Police Director to hire fire and promote their officers
-local function menu_police_admin_users(self)
-  local function m_police_user(menu, id)
-    menu.user:openMenu("admin.users.user", {id = id})
-  end
-
-  vRP.EXT.GUI:registerMenuBuilder("police.admin.users", function(menu)
-    local user = menu.user
-
-    menu.title = lang.admin.users.title()
-    menu.css.header_color = "rgba(200,0,0,0.75)"
-
-    for id, user in pairs(vRP.users) do
-      menu:addOption(lang.admin.users.user.title({id, htmlEntities.encode(user.name)}), m_police_user, nil, id)
     end
   end)
 end
@@ -318,7 +252,6 @@ function Admin:__construct()
 
   menu_admin(self)
   menu_admin_users(self)
-  menu_police_admin_users(self)
   menu_admin_users_user(self)
 
   -- main menu

@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.emotes then return end
 
 -- this module define the emotes menu
@@ -56,11 +59,11 @@ function Emotes:__construct()
     menu:addOption(lang.emotes.clear.title(), m_clear, lang.emotes.clear.description())
   end)
 
-  -- vRP.EXT.GUI:registerMenuBuilder("main", function(menu)
-  --   menu:addOption(lang.emotes.title(), function(menu)
-  --     menu.user:openMenu("emotes")
-  --   end)
-  -- end)
+  vRP.EXT.GUI:registerMenuBuilder("main", function(menu)
+    menu:addOption(lang.emotes.title(), function(menu)
+      menu.user:openMenu("emotes")
+    end)
+  end)
 end
 
 -- add a new emote

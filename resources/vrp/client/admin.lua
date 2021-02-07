@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.admin then return end
 
 local Admin = class("Admin", vRP.Extension)
@@ -8,7 +11,7 @@ function Admin:__construct()
   vRP.Extension.__construct(self)
 
   self.noclip = false
-  self.noclip_speed = 2.0
+  self.noclip_speed = 1.0
 
   -- noclip task
   Citizen.CreateThread(function()

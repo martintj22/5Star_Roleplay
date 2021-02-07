@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.map then return end
 
 -- BLIPS: see https://wiki.gtanet.work/index.php?title=Blips for blip id/color
@@ -97,7 +100,6 @@ end
 function PoI:unload()
   if self.blip then
     RemoveBlip(self.blip)
-    -- SetBlipSprite(self.blip, 29)
   end
 end
 
@@ -165,7 +167,6 @@ end
 function PlayerMark:unload()
   if self.blip then
     RemoveBlip(self.blip)
-    -- SetBlipSprite(self.blip, 29)
   end
 end
 

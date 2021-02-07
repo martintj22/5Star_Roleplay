@@ -1,3 +1,6 @@
+-- https://github.com/ImagicTheCat/vRP
+-- MIT license (see LICENSE or vrp/vRPShared.lua)
+
 if not vRP.modules.survival then return end
 
 local Luang = module("vrp", "lib/Luang")
@@ -108,10 +111,6 @@ function Survival:__construct()
 
           if self.coma_left <= 0 then -- get out of coma by death
             SetEntityHealth(ped, 0)
-            Citizen.Wait(8000)
-            vRP.EXT.Base:teleport(297.27603149414,-583.76232910156,43.132518768311)
-            --user:giveDebt(5000)
-            --vRP.EXT.Base.remote._notify(user.source, "you have been charged ~r~$5,000 ~w~in medical bills.")
           end
 
           SetTimeout(5000, function()  -- able to be in coma again after coma death after 5 seconds

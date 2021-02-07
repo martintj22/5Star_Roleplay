@@ -108,7 +108,7 @@ cfg.groups = {
   --==========|===========|==========--
   --==========|LSPD Groups|==========--
   --==========|===========|==========--
-  ["cadet"] = {
+  ["lspd cadet"] = {
     _config = {
       title = "LSPD Kadet",
       gtype = "job",
@@ -135,7 +135,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["police1"] = {
+  ["lspd police1"] = {
     _config = {
       title = "Politimand",
       gtype = "job",
@@ -162,7 +162,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["police2"] = {
+  ["lspd police2"] = {
     _config = {
       title = "Senior politibetjent",
       gtype = "job",
@@ -189,7 +189,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_corporal"] = {
+  ["lspd corporal"] = {
     _config = {
       title = "LSPD korporal",
       gtype = "job",
@@ -216,7 +216,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_sgt"] = {
+  ["lspd sgt"] = {
     _config = {
       title = "LSPD Sergent",
       gtype = "job",
@@ -243,7 +243,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_lt"] = {
+  ["lspd lt"] = {
     _config = {
       title = "LSPD Løjtnant",
       gtype = "job",
@@ -270,7 +270,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_cpt"] = {
+  ["lspd cpt"] = {
     _config = {
       title = "LSPD Kaptajn",
       gtype = "job",
@@ -297,7 +297,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_ltmjr"] = {
+  ["lspd ltmjr"] = {
     _config = {
       title = "LSPD Løjtnant major",
       gtype = "job",
@@ -324,7 +324,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_mjr"] = {
+  ["lspd mjr"] = {
     _config = {
       title = "LSPD Major",
       gtype = "job",
@@ -351,7 +351,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_cmdr"] = {
+  ["lspd cmdr"] = {
     _config = {
       title = "LSPD Kommandør",
       gtype = "job",
@@ -378,7 +378,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_asscheif"] = {
+  ["lspd asscheif"] = {
     _config = {
       title = "LSPD Assistentchef",
       gtype = "job",
@@ -405,7 +405,7 @@ cfg.groups = {
     "police.chest_seized",
     "-police.seizable" -- negative permission, police can't seize itself, even if another group add the permission
   },
-  ["lspd_cheif"] = {
+  ["lspd cheif"] = {
     _config = {
       title = "LSPD Chief",
       gtype = "job",
@@ -507,9 +507,9 @@ cfg.selectors = {
   --=====|====|=====--
   ["Police job"] = {
     _config = {x = 437.924987792969, y = -987.974182128906, z = 30.6896076202393, permissions={"police.whitelisted"}, map_entity = {"PoI", {blip_id = 351, blip_color = 38, marker_id = 1}}},
-    "cadet",
-    "police1",
-    "police2",
+    "lspd cadet",
+    "lspd police1",
+    "lspd police2",
     "Borger"
   },
   ["Emergency job"] = {
@@ -558,8 +558,7 @@ cfg.count_display_css = [[
 cfg.count_display_permissions = {
   {"!group.user", "https://i.imgur.com/tQ2VHAi.png"},
   {"!group.admin", "https://i.imgur.com/cpSYyN0.png"},
-  {"!group.cadet", "https://i.imgur.com/dygLDfC.png"},
-  {"!group.police", "https://i.imgur.com/dygLDfC.png"},
+  {"!group.lspd", "https://i.imgur.com/dygLDfC.png"},
   {"!group.emergency", "https://i.imgur.com/K5lXutO.png"},
   {"!group.repair", "https://i.imgur.com/QEjFgzM.png"},
   {"!group.taxi", "https://i.imgur.com/yY4yrZN.png"}

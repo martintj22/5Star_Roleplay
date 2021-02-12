@@ -19,7 +19,8 @@ cfg.static_chest_types = {
 
 -- list of static chest points
 cfg.static_chests = {
-  {"police_seized", 452.44293212891,-980.17449951172,30.689586639404}
+  {"police_seized", 452.44293212891,-980.17449951172,30.689586639404},
+  {"police_seized", -441.8440246582,5987.5805664063,31.716188430786} -- Paleto SO
 }
 
 return cfg

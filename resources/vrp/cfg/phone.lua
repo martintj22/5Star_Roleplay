@@ -53,38 +53,78 @@ cfg.phone_call_css = [[
 -- alert_notify (notification received when an alert is sent)
 -- notify (notification when sending an alert)
 cfg.services = {
-  ["police"] = {
+  ["311"] = {
     map_entity = {"PoI", {blip_id = 304, blip_color = 38}},
     alert_time = 300, -- 5 minutes
     alert_permission = "police.service",
     alert_notify = "~r~Police alert:~n~~s~",
-    notify = "~b~You called the police.",
-    answer_notify = "~b~The police is coming."
+    notify = "~b~Du ringede til 311.",
+    answer_notify = "~b~En enhed svarer, vent venligst."
   },
-  ["emergency"] = {
+  ["911"] = {
     map_entity = {"PoI", {blip_id = 153, blip_color = 1}},
     alert_time = 300, -- 5 minutes
     alert_permission = "emergency.service",
-    alert_notify = "~r~Emergency alert:~n~~s~",
-    notify = "~b~You called the emergencies.",
-    answer_notify = "~b~The emergencies are coming."
+    alert_notify = "~r~911 Call:~n~~s~",
+    notify = "~b~Du ringede til 911.",
+    answer_notify = "~b~En enhed svarer, vent venligst."
   },
   ["taxi"] = {
     map_entity = {"PoI", {blip_id = 198, blip_color = 5}},
     alert_time = 300,
     alert_permission = "taxi.service",
     alert_notify = "~y~Taxi alert:~n~~s~",
-    notify = "~y~You called a taxi.",
-    answer_notify = "~y~A taxi is coming."
+    notify = "~y~Du ringede til en taxi.",
+    answer_notify = "~y~A taxi kommer om lidt."
   },
-  ["repair"] = {
+  ["Roadside Assistance"] = {
     map_entity = {"PoI", {blip_id = 446, blip_color = 5}},
     alert_time = 300,
     alert_permission = "repair.service",
-    alert_notify = "~y~Repair alert:~n~~s~",
-    notify = "~y~You called a repairer.",
-    answer_notify = "~y~A repairer is coming."
-  }
+    alert_notify = "~y~Vejassistentopkald:~n~~s~",
+    notify = "~y~Du ringede til Vejhjælp.",
+    answer_notify = "~y~Vejhjælps er på vej."
+  },
+  ["Burgershot"] = {
+    map_entity = {"PoI", {blip_id = 161, blip_color = 5}},
+    alert_time = 120,
+    alert_permission = "burger.service",
+    alert_notify = "~y~Delivery Order:~n~~s~",
+    notify = "~y~You called for a burger Delivery.",
+    answer_notify = "~y~Your food is on the way."
+  },
+  ["Cluckin' Bell"] = {
+    map_entity = {"PoI", {blip_id = 161, blip_color = 5}},
+    alert_time = 120,
+    alert_permission = "chicken.service",
+    alert_notify = "~y~Delivery Order:~n~~s~",
+    notify = "~y~You called for a chicken Delivery.",
+    answer_notify = "~y~Your food is on the way."
+  },
+  ["Attack-A-Taco"] = {
+    map_entity = {"PoI", {blip_id = 161, blip_color = 5}},
+    alert_time = 120,
+    alert_permission = "taco.service",
+    alert_notify = "~y~Delivery Order:~n~~s~",
+    notify = "~y~You called for a taco Delivery.",
+    answer_notify = "~y~Your food is on the way."
+  },
+  ["Weasel News"] = {
+    map_entity = {"PoI", {blip_id = 161, blip_color = 5}},
+    alert_time = 120,
+    alert_permission = "news.service",
+    alert_notify = "~y~News alert:~n~~s~",
+    notify = "~y~You called Weasel News!",
+    answer_notify = "~y~Weasel News is on the way!"
+  },
+  ["Public Works"] = {
+    map_entity = {"PoI", {blip_id = 161, blip_color = 5}},
+    alert_time = 120,
+    alert_permission = "pw.service",
+    alert_notify = "~y~Public Works alert:~n~~s~",
+    notify = "~y~You called San Andreas Public Works",
+    answer_notify = "~y~San Andreas Public Works is on the way!"
+  },
 }
 
 -- define phone announces

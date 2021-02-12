@@ -92,6 +92,7 @@ cfg.groups = {
     "player.phone",
     "player.calladmin",
     "player.store_weapons",
+	"item.bypass",
     "police.seizable" -- can be seized
   },
   --==========|===================|==========--
@@ -442,6 +443,7 @@ cfg.groups = {
       title = "Reder",
       gtype = "job"
     },
+	"ems.items",
     "emergency.revive",
     "emergency.shop",
     "emergency.service",
